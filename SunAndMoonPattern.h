@@ -46,17 +46,22 @@ void setTimes(uint8_t sunStartH, uint8_t sunStartM, uint8_t moonStartH, uint8_t 
 }
 
 void boundsCheck() {
-    if (moonStartHour < 0) moonStartHour = 20;
-    else if (moonStartHour > 23) moonStartHour = 20;
-
-    if (moonStartMin < 0) moonStartMin = 0;
-    else if (moonStartMin > 59) moonStartMin = 0;
+    if (sunStartHour > moonStartHour) { //invalid setting, use default
+        sunStartHour = 8;
+        moonStartHour = 20;
+    }
 
     if (sunStartHour < 0) sunStartHour = 8;
     else if (sunStartHour > 23) sunStartHour = 8;
 
     if (sunStartMin < 0) sunStartMin = 0;
     else if (sunStartMin > 59) sunStartMin = 0;
+
+    if (moonStartHour < 0) moonStartHour = 20;
+    else if (moonStartHour > 23) moonStartHour = 20;
+
+    if (moonStartMin < 0) moonStartMin = 0;
+    else if (moonStartMin > 59) moonStartMin = 0;
 }
 
 void loadTimeSettings() {
