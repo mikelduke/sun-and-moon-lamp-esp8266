@@ -23,4 +23,15 @@ void flashLeds(const CRGB& color, int times) {
   flashLeds(color, times, 50);
 }
 
+void ledID() {
+    for (int i = 0; i < NUM_LEDS; i++) {
+        leds[i] = CRGB::White;
+        FastLED.show();
+        leds[i] = CRGB::Black;
+        Serial.print("LED #");
+        Serial.println(i);
+        delay(1000);
+    }
+}
+
 #endif

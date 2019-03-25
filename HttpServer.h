@@ -20,6 +20,16 @@ void handleRoot() {
   for (uint8_t i = 0; i < patternCount; i++) {
     page += "<a href='/set/pattern?value=" + String(i) + "'>" + patterns[i].name + "</a><br />\n";
   }
+
+  //Only add time when sun and moon pattern is set
+  if (patterns[currentPatternIndex].pattern == sunAndMoonPattern) {
+    page += "<br />\n";
+    page += "Time: " + timeClient.getFormattedTime() + "<br />\n";
+    page += "Sun " + String(sunStartHour) + ":" + String(sunStartMin) + " Moon " + String(moonStartHour) + ":" + String(moonStartMin);
+    page += "<br />\n";
+    page += "<a href=\"times\"><strong>Set Times</strong></a><br />\n";
+  }
+
   page += "</body></html>";
   server.send(200, "text/html", page);
 }
@@ -80,6 +90,34 @@ void setupHttpServer() {
     json += "]}";
 
     sendJson(json);
+  });
+
+  server.on("/times", HTTP_GET, []() {
+      String page = "<html>\
+    <head>\
+      <title>Sun and Moon Lamp Time</title>\
+    </head>\
+    <body>\
+      <h1>Set Sun and Moon Time</h1>\
+      <hr />\n";
+    page += "<br />\n";
+    page += "Time: " + timeClient.getFormattedTime() + "<br />\n";
+    page += "<strong>Current Settings:</strong> ";
+    page += "Sun " + String(sunStartHour) + ":" + String(sunStartMin) + " Moon " + String(moonStartHour) + ":" + String(moonStartMin);
+    
+    page += "</body></html>";
+    server.send(200, "text/html", page);
+  });
+
+  server.on("/set/times", HTTP_GET, []() {
+    String sunHour = server.arg("sunHour");
+    String sunMin = server.arg("sunMin");
+    String moonHour = server.arg("moonHour");
+    String moonMin = server.arg("moonMin");
+
+    setTimes(sunHour.toInt(), sunMin.toInt(), moonHour.toInt(), moonMin.toInt());
+    server.sendHeader("Location", String("/"), true);
+    server.send ( 303, "text/plain", "");
   });
 
   server.begin();

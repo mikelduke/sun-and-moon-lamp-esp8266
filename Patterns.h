@@ -3,7 +3,8 @@
 
 #include "BasicPatterns.h"
 #include "DemoPatterns.h"
-#include "FirePattern.h"
+#include "CylonPattern.h"
+#include "SunAndMoonPattern.h"
 
 extern uint8_t currentPatternIndex = 0;
 
@@ -19,18 +20,17 @@ typedef PatternAndName PatternAndNameList[];
 
 // Add new patterns here
 extern PatternAndNameList patterns = {
+  { cylon,                 "Cylon" },
+  { whiteCylon,            "Cylon White" },
   { ring,                  "Ring" },
   { ring_two,              "Ring Type 2" },
   { huefade,               "Hue Fade" },
   { rainbow,               "Rainbow" },
-//   { rainbowWithGlitter,    "Rainbow with Glitter" },
-  { fire2012,              "Fire" },
-  { confetti,              "Confetti" },
-  { juggle,                "Juggle" },
   { white,                 "Set to White"},
   { red,                   "Set to Red"},
   { blue,                  "Set to Blue"},
-  { green,                   "Set to Green"}
+  { green,                 "Set to Green"},
+  { sunAndMoonPattern,     "Sun And Moon" }
 };
 
 extern const uint8_t patternCount = ARRAY_SIZE(patterns);

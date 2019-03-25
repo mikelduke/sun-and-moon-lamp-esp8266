@@ -1,5 +1,5 @@
 #include <EEPROM.h>
-#define EEPROM_LAST_MODE 0
+#include "EEPromAddresses.h"
 
 #define FASTLED_ESP8266_NODEMCU_PIN_ORDER
 #include <FastLED.h>
@@ -7,6 +7,7 @@
 #define NUM_LEDS 10
 #define DATA_PIN 3
 #define CLOCK_PIN 13
+#define BRIGHTNESS 255
 
 #define DELAY 40
 
@@ -26,7 +27,6 @@ CRGB leds[NUM_LEDS];
 const char* ssid = STASSID;
 const char* password = STAPSK;
 
-
 /******************* FUNCTIONS **********************/
 
 void setup() {
@@ -37,7 +37,7 @@ void setup() {
   loadSettings();
 
   LEDS.addLeds<WS2812,DATA_PIN,GRB>(leds,NUM_LEDS);
-  LEDS.setBrightness(250);
+  LEDS.setBrightness(BRIGHTNESS);
 
   setupWiFi();
 
