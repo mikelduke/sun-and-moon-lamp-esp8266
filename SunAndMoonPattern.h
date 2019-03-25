@@ -13,6 +13,7 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
 
 boolean initTime = false;
+boolean sunIsLit = false;
 
 //Lamp has two strips of leds connected at one end
 //Sun LEDS #0,1,2,7,8,9
@@ -23,7 +24,12 @@ uint8_t sunStartMin;
 uint8_t moonStartHour;
 uint8_t moonStartMin;
 
+void setTimes(uint8_t sunStartH, uint8_t sunStartM, uint8_t moonStartH, uint8_t moonStartM);
+void loadTimeSettings();
 void boundsCheck();
+void lightSun();
+void lightMoon();
+void sunAndMoonPattern();
 
 void setTimes(uint8_t sunStartH, uint8_t sunStartM, uint8_t moonStartH, uint8_t moonStartM) {
     sunStartHour = sunStartH;
@@ -71,9 +77,12 @@ void setupTime() {
     initTime = true;
 
     timeClient.update();
+    lightSun();
 }
 
 void lightSun() {
+    if (sunIsLit) return; //skip changing leds if already lit
+
     for (int i = 0; i < NUM_LEDS; i++) {
         leds[i] = CRGB::Black;
     }
@@ -85,9 +94,12 @@ void lightSun() {
     leds[8] = CRGB::White;
     leds[9] = CRGB::White;
     FastLED.show();
+    sunIsLit = true;
 }
 
 void lightMoon() {
+    if (!sunIsLit) return; //skip changing leds if already lit
+
     for (int i = 0; i < NUM_LEDS; i++) {
         leds[i] = CRGB::Black;
     }
@@ -96,6 +108,7 @@ void lightMoon() {
     leds[5] = CRGB::White;
     leds[6] = CRGB::White;
     FastLED.show();
+    sunIsLit = false;
 }
 
 void sunAndMoonPattern() {

@@ -104,12 +104,22 @@ void setupHttpServer() {
     page += "Time: " + timeClient.getFormattedTime() + "<br />\n";
     page += "<strong>Current Settings:</strong> ";
     page += "Sun " + String(sunStartHour) + ":" + String(sunStartMin) + " Moon " + String(moonStartHour) + ":" + String(moonStartMin);
+
+    page += "<br />\n";
+    page += "<form action=\"/set/times\" method=\"post\">";
+    page += "Sun <input type=\"text\" name=\"sunHour\" value=\"" + String(sunStartHour) + "\">:";
+    page += "<input type=\"text\" name=\"sunMin\" value=\"" + String(sunStartMin) + "\">";
+    page += "<br />\n";
+    page += "Moon <input type=\"text\" name=\"moonHour\" value=\"" + String(moonStartHour) + "\">:";
+    page += "<input type=\"text\" name=\"moonMin\" value=\"" + String(moonStartMin) + "\">";
+    page += "<br />\n";
+    page += "<input type=\"submit\" value=\"Submit\"></form>";
     
     page += "</body></html>";
     server.send(200, "text/html", page);
   });
 
-  server.on("/set/times", HTTP_GET, []() {
+  server.on("/set/times", HTTP_POST, []() {
     String sunHour = server.arg("sunHour");
     String sunMin = server.arg("sunMin");
     String moonHour = server.arg("moonHour");
